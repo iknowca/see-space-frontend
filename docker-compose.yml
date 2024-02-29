@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  nginx:
+    image: "nginx:latest"
+    container_name: vue-ssf-container
+    volumes:
+      - ./conf:/etc/nginx/conf.d
+      - ./dist:/usr/share/nginx/html
+    ports:
+      - "9015:80"
