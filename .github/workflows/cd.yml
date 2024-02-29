@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.USERNAME_4800H }}
           key: ${{ secrets.PRIVATE_KEY }}
           source: "./dist, ./conf, ./docker-compose.yml"
-          target: "~/prod/imf"
+          target: "~/prod/ssf"
       
 
 
