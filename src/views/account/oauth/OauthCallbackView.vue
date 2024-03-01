@@ -16,7 +16,7 @@ const router = useRouter()
 const accountStore = useAccountStore()
 
 onMounted(() => {
-    serverAxios.get(`/account/oauth/callback/${provider}?code=${code}`)
+    serverAxios.get(`/account/oauth/callback/${provider}?code=${code}`, { withCredentials: true })
     .then((res)=> {
         serverAxios.defaults.headers.common['Authorization'] = `${res.data.accessToken}`
         accountStore.setLoginState(true)
