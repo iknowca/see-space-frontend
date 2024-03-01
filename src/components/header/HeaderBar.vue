@@ -20,6 +20,10 @@ const loginState = computed(() => accountStore.loginState)
 
 onMounted(() => {
     accountStore.setLoginState(localStorage.getItem('loginState') === 'true' ? true : false)
+
+    if( loginState.value) {
+        accountStore.getAccountInfo()      
+    }
 })
 </script>
 <style lang="">
