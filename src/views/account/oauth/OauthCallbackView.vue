@@ -18,7 +18,7 @@ const accountStore = useAccountStore()
 onMounted(() => {
     serverAxios.get(`/account/oauth/callback/${provider}?code=${code}`)
     .then((res)=> {
-        serverAxios.defaults.headers.common['Authorization'] = `${res.data.token}`
+        serverAxios.defaults.headers.common['Authorization'] = `${res.data.accessToken}`
         accountStore.setLoginState(true)
         router.push('/')
     })
