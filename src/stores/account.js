@@ -7,10 +7,7 @@ export const useAccountStore = defineStore('account', {
     actions: {
         setLoginState(state) {
             this.loginState = state
-        }
+            localStorage.setItem('loginState', state)
+        },
     },
-    persist: {
-        enabled: true,
-        strategies: [{ storage: localStorage}]
-    }
 })
