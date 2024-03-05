@@ -45,10 +45,10 @@ const accountStore = useAccountStore();
 const validateEmail = () => {
   serverAxios.post('/account/validate-email', {type: "local", email: email.value})
       .then((res) => {
-        if (res.data.status === "failure") {
-          emailValidation.value = true
+        if (res.data.message === "NOT_REGISTERED_EMAIL") {
+          alert('등록되지 않은 이메일입니다')
         } else {
-          alert('이미 사용중인 이메일입니다.')
+          emailValidation.value = true
         }
       })
       .catch((err) => {
