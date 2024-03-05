@@ -4,7 +4,7 @@
       <v-col cols="12" sm="10" md="8">
         <v-card class="pa-6 mt-8">
           <v-card-title class="text-center">
-            <h1>Join</h1>
+            <h1>들어가기</h1>
           </v-card-title>
           <v-card-text>
             <v-form>
@@ -68,7 +68,7 @@ const login = () => {
   serverAxios.post('/account/login', {email: email.value, password: password.value}, {withCredentials: true})
       .then((res) => {
         if (res.data.status === "success") {
-          serverAxios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`
+          serverAxios.defaults.headers.common['Authorization'] = `${res.data.accessToken}`
           accountStore.setLoginState(true)
           router.push('/')
         } else {
