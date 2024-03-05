@@ -16,26 +16,13 @@ libray: axios, pinia, vuerouter
 ## 전체 프로젝트 아키텍쳐 구상도 (미완)
 ![alt text](readme/image-2.png)
 
+## Full Tech Stack of Project
+Framework: SpringBoot / Node.js / FastApi / Vue3.js<br>
+DB: MySQL(JPA, MyBatis) / Redis / MongoDB / Neo4j / minio<br>
+ENV: Docker / Nginx / RabbitMQ<br>
+Language: Java / JavaScript / Python<br>
+CI/CD: GitHub Actions<br>
+UI-component: vuetify3<br>
+Test: Junit5 / Mockito / Testcontainer / Jest <br>
+Documentation: Swagger<br>
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

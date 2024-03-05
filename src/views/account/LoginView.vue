@@ -10,10 +10,10 @@
             <v-form>
               <v-text-field :disabled="emailValidation" v-model="email" label="email" required
                             variant="outlined"></v-text-field>
-              <v-btn v-if="!emailValidation" color="primary" @click="validateEmail">Email 중복 확인</v-btn>
+              <v-btn v-if="!emailValidation" color="primary" @click="validateEmail">Login</v-btn>
               <v-text-field type="password" v-if="emailValidation" v-model="password" label="password" required
                             variant="outlined"></v-text-field>
-              <v-btn v-if="emailValidation" color="primary" @click="login">join</v-btn>
+              <v-btn v-if="emailValidation" color="primary" @click="login">Login</v-btn>
               <div class="text-center">
               </div>
             </v-form>
@@ -69,8 +69,15 @@ const login = () => {
       .then((res) => {
         if (res.data.status === "success") {
           serverAxios.defaults.headers.common['Authorization'] = `${res.data.accessToken}`
-          accountStore.setLoginState(true)
-          router.push('/')
+          serverAxios.get('/account')
+              .then((res) => {
+                accountStore.setAccountInfo(res.data.data)
+                accountStore.setLoginState(true)
+                router.push('/')
+              })
+              .catch(() => {
+                alert('로그인 실패')
+              })
         } else {
           alert('로그인 실패')
         }
