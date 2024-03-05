@@ -13,7 +13,7 @@ serverAxios.interceptors.response.use((res) => { return res },
         }
         if (error.response.status === 401 && error.response?.data.message === "Token is not found" && error.config.url !== '/jwt/refresh') {
             serverAxios.refresh = true;
-            return await serverAxios.get('/jwt/refresh', { withCredentials: true })
+            return await serverAxios.get('/account/jwt/refresh', { withCredentials: true })
                 .then((res) => {
                     serverAxios.defaults.headers.common['Authorization'] = `${res.data.accessToken}`;
                     serverAxios.refresh = false;

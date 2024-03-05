@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <v-container>
         <v-row justify="center">
             <v-col cols="12" sm="10" md="8">
@@ -41,13 +41,24 @@ const passwordValidation = ref('')
 
 const validateEmail = () => {
     event.preventDefault();
-    serverAxios.post('/account/validate-email', { email: email.value })
-        .then((result) => {
-            if (result.data === true) {
-                alert('해당 이메일로 가입한 계정이 이미 존재합니다.')
+    serverAxios.post('/account/validate-email', { type: "local",  email: email.value })
+        .then((res) => {
+          if (res.data.message === "NOT_REGISTERED_EMAIL") {
+            emailValidation.value = true
+          } else {
+            alert('이미 사용중인 이메일입니다.')
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.status === "failure") {
+            if (err.response.data.message === "EMAIL_DUPLICATION") {
+              alert('중복된 이메일입니다.')
+            } else if (err.response.data.message === "INVALID_EMAIL") {
+              alert('이메일 형식이 올바르지 않습니다.')
             } else {
-                emailValidation.value = true
+              alert('알 수 없는 오류가 발생하였습니다.')
             }
+          }
         })
 }
 
@@ -57,7 +68,7 @@ const join = () => {
         alert('비밀번호가 일치하지 않습니다.')
         return
     }
-    serverAxios.post('/account/join', { email: email.value, password: password.value })
+    serverAxios.post('/account/join', { type:"local", email: email.value, password: password.value })
         .then((result) => {
             console.log(result.data)
             if (result.data.status === "success") {
@@ -68,7 +79,7 @@ const join = () => {
             }
         })
         .catch((err) => {
-            if (err.response.status === 400 && err.response.data.message === "이메일 형식이 올바르지 않습니다.") {
+            if (err.response.status === 400 && err.response.data.message === "INVALID_EMAIL") {
                 alert('이메일 형식이 올바르지 않습니다.\n이메일을 다시 확인해주세요.')
                 emailValidation.value = false
                 email.value = ''

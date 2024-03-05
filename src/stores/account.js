@@ -14,11 +14,14 @@ export const useAccountStore = defineStore('account', {
         getAccountInfo() {
             return serverAxios.get('/account')
             .then(res => {
-                this.account = res.data
+                this.account = res.data.data
             })
             .catch(err => {
                 console.log(err)
             })
+        },
+        setAccountInfo(accountInfo) {
+            this.account = accountInfo
         }
     },
 })
