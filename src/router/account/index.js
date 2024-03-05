@@ -1,6 +1,7 @@
 import JoinView from '@/views/account/JoinView'
 import OauthCallbackView from '@/views/account/oauth/OauthCallbackView'
 import MyPageView from '@/views/account/MyPageView'
+import LoginView from "@/views/account/LoginView.vue";
 
 const accountRouter = [
     {
@@ -9,14 +10,19 @@ const accountRouter = [
         component: JoinView
     },
     {
-        path: '/oauth/callback/:provider',
+        path: '/account/oauth/callback/:provider',
         name: 'oauthCallback',
         component: OauthCallbackView
     },
     {
         path: '/account/mypage',
         name: 'mypage',
-        compoenent: MyPageView
+        component: MyPageView
+    },
+    {
+        path: '/account/login',
+        name: 'login',
+        component: LoginView
     }
 ]
 
