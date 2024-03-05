@@ -43,7 +43,7 @@ const validateEmail = () => {
     event.preventDefault();
     serverAxios.post('/account/validate-email', { type: "local",  email: email.value })
         .then((res) => {
-          if (res.data.status === "success") {
+          if (res.data.message === "NOT_REGISTERED_EMAIL") {
             emailValidation.value = true
           } else {
             alert('이미 사용중인 이메일입니다.')
