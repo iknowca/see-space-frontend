@@ -1,78 +1,61 @@
-<template lang="">
-    <div>
-        <v-card class="w-50 ma-auto pa-4">
-            <h1 class="text-center">My Page                                    
-            </h1>
-            <v-card-text>
-                <v-form>
-                    <v-text-field v-if='accountInfo.accountType==="LocalAccount"' variant="outlined" label="Email" readonly :model-value="accountInfo.email"></v-text-field>
-                    <v-text-field label="nickname" clearable v-model="modifiedAccountInfo.nickname"></v-text-field>
-                    <v-text-field label="Password" type="password" v-model="password"></v-text-field>
-                    <v-text-field label="Password Validation" type="password" v-model="passwordValidation"></v-text-field>
-                    <v-btn @click="updateAccountInfo" color="primary">수정하기</v-btn>
-                </v-form>
-            </v-card-text>
-
-        </v-card>
-    </div>
+<template>
+  <v-row justify="center" class="ma-4">
+    <v-col cols="12" sm="10" md="8">
+      <v-card class="pa-6 mt-8">
+        <v-card-title>
+          <h1>내 정보</h1>
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="accountInfo.email" label="email" required variant="outlined"
+                            disabled></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field v-model="accountInfo.nickname" label="nickname" required variant="outlined"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-row cols="12">
+                <v-col class="d-flex justify-center">
+                  <v-btn color="primary" @click="updateAccountInfo">수정</v-btn>
+                </v-col>
+              </v-row>
+              <v-row v-if="accountInfo.type==='local'">
+                <v-col class="d-flex justify-center">
+                  <v-btn color="primary" @click="router.push('/account/mypage/password')">비밀번호 수정</v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 <script setup>
-import serverAxios from '@/util/axiosInstance/serverAxios'
-import { onMounted } from 'vue';
-import { reactive } from 'vue';
 
-const accountInfo = reactive({
-    email: '',
-    nickname: '',
-    password: '',
-    passwordValidation: '',
-    accountType: '',
-    platform: ''
-})
+import {useAccountStore} from "@/stores/account";
+import {computed} from "vue";
+import serverAxios from "@/util/axiosInstance/serverAxios";
+import {useRouter} from "vue-router";
 
-// eslint-disable-next-line no-unused-vars
-const modifiedAccountInfo = reactive({
-    nickname: '',
-    password: '',
-})
+const accountStore = useAccountStore()
+const accountInfo = computed(() => accountStore.account)
+const router = useRouter()
 
-
-const getAccountInfo = () => {
-    serverAxios.get('/account')
-        .then((result) => {
-            accountInfo.email = result.data.email;
-            accountInfo.nickname = result.data.nickname;
-            accountInfo.accountType = result.data.accountType;
-            accountInfo.platform = result.data.platform;
-
-            modifiedAccountInfo.nickname = result.data.nickname;
-            modifiedAccountInfo.password = result.data.password;
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+const updateAccountInfo = () => {
+  serverAxios.patch('/account', {type: accountInfo.value.type, nickname: accountInfo.value.nickname})
+      .then((res) => {
+        if (res.data.status === "success") {
+          accountStore.setAccountInfo(res.data.data)
+          alert('정보 수정에 성공하였습니다.')
+        } else {
+          alert('정보 수정에 실패하였습니다.')
+        }
+      })
+      .catch(() => {
+        alert('정보 수정에 실패하였습니다.')
+      })
 }
 
-const updateAccountInfo = ()=> {
-    if (accountInfo.password !== accountInfo.passwordValidation) {
-        alert('password is not same');
-        return;
-    }
-
-    serverAxios.patch('/account', {
-        nickname: modifiedAccountInfo.nickname,
-        password: modifiedAccountInfo.password
-    })
-        // eslint-disable-next-line no-unused-vars
-        .then((result) => {
-            alert('update success');
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-}
-
-onMounted(() => {
-    getAccountInfo();
-})
 </script>
