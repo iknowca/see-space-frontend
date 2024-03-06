@@ -65,10 +65,10 @@ const validateEmail = () => {
 }
 
 const login = () => {
-  serverAxios.post('/account/login', {email: email.value, password: password.value}, {withCredentials: true})
+  serverAxios.post('/account/login', {type: "local", email: email.value, password: password.value}, {withCredentials: true})
       .then((res) => {
         if (res.data.status === "success") {
-          serverAxios.defaults.headers.common['Authorization'] = `${res.data.accessToken}`
+          serverAxios.defaults.headers.common['Authorization'] = `${res.data.message}`
           serverAxios.get('/account')
               .then((res) => {
                 accountStore.setAccountInfo(res.data.data)
